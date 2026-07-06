@@ -1,0 +1,89 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.5;
+  height: 100%;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #edf3f8;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.search__round {
+  padding: 8px;
+}
+
+.form {
+  max-width: 400px;
+  width: 100%;
+}
+
+.input__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form__input {
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+.suggestions__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: white;
+  border: 1px solid #ccc;
+}
+
+.suggestions__list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions__list li:hover {
+  background: #eee;
+}
+
+.conditions__left-icon {
+  display: inline-block;
+  font-size: 52px;
+}
+
+.conditions__left-temperature {
+  font-size: 50px;
+}
+
+.conditions__line {
+  display: inline-block;
+  padding: 1px;
+}
+
+.conditions__right-details {
+  margin: 0;
+  margin-top: 2.5px;
+  font-size: 14px;
+}
+
+.conditions__datas-items {
+  margin-top: 2.5px;
+  font-size: 17px;
+}
