@@ -66,7 +66,7 @@ const renderAddress = async function (country, index) {
     alert("Error fetching data. Please try again later.");
   }
 };
-renderAddress("mumbai");
+renderAddress("tashkent");
 
 const renderDatas = async function (
   latitude,
@@ -79,16 +79,15 @@ const renderDatas = async function (
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m,surface_pressure,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,precipitation_probability&forecast_days=7&timezone=auto`,
   );
   const data = await res.json();
+
+  // Current information:
   const days = data.daily.time.map((date) =>
     new Date(date).toLocaleDateString("en-CA", {
       weekday: "long",
     }),
   );
-  const today = new Date().toISOString().split("T")[0];
+  const today = data.current.time.split("T")[0];
   const todayIndex = data.daily.time.indexOf(today);
-
-  console.log(data);
-
   document.querySelector(".conditions__left-icon").textContent =
     `${weatherInfo[data.current.weather_code].icon}`;
   document.querySelector(".conditions__left-temperature").textContent =
@@ -105,6 +104,79 @@ const renderDatas = async function (
     ` ${data.current.time.split("T")[1]}`;
   document.querySelector(".conditions__datas-items-condition").textContent =
     ` ${weatherInfo[data.current.weather_code].text}`;
+
+  // Grapic:
+
+  const dailyTimes = data.hourly.time.map((item) => item.split("T")[1]);
+  const updatedTime = dailyTimes.indexOf(
+    `${data.current.time.slice(11, 13)}:00`,
+  );
+  const hourlyTemp = data.hourly.temperature_2m.slice(
+    updatedTime,
+    updatedTime + 24,
+  );
+  const hourlyTimes = dailyTimes.slice(updatedTime, updatedTime + 24);
+
+  const options = {
+    chart: {
+      type: "area",
+      height: 250,
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+    },
+
+    series: [
+      {
+        data: hourlyTemp,
+      },
+    ],
+
+    xaxis: {
+      categories: hourlyTimes,
+    },
+
+    stroke: {
+      curve: "smooth",
+      width: 2,
+    },
+
+    colors: ["#FFC107"],
+
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.35,
+        opacityTo: 0.05,
+      },
+    },
+
+    markers: {
+      size: 0,
+    },
+
+    dataLabels: {
+      enabled: true,
+    },
+
+    grid: {
+      padding: {
+        left: 15,
+      },
+      show: false,
+    },
+
+    yaxis: {
+      show: false,
+    },
+  };
+
+  document.querySelector("#chart").innerHTML = "";
+  new ApexCharts(document.querySelector("#chart"), options).render();
 };
 
 let timer;

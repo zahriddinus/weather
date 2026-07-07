@@ -87,3 +87,18 @@ img {
   margin-top: 2.5px;
   font-size: 17px;
 }
+
+.chart-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.chart-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+#chart {
+  min-width: 1400px; /* yoki data.length * 60 px */
+}
