@@ -1,9 +1,9 @@
 "script";
 
-const elUserAddress = document.querySelector(".main__address");
-const elForm = document.querySelector(".form");
-const elFormInput = document.querySelector(".form__input");
-const elSuggestionsList = document.querySelector(".suggestions__list");
+const elUserAddress = document.querySelector(".search__address");
+const elForm = document.querySelector(".search__form");
+const elFormInput = document.querySelector(".search__form-input");
+const elSuggestionsList = document.querySelector(".search__suggestions-list");
 
 const weatherInfo = {
   0: { icon: "☀️", text: "Clear" },
@@ -34,7 +34,7 @@ elForm.addEventListener("submit", (evt) => {
   elSuggestionsList.classList.remove("d-block");
   elSuggestionsList.classList.add("d-none");
 
-  renderAddress(elFormInput.value.trim());
+  renderAddress(elFormInput.value.trim().toLowerCase());
 });
 
 const renderAddress = async function (country, index) {
@@ -49,34 +49,46 @@ const renderAddress = async function (country, index) {
       name,
       admin1: regionName,
       country: countryName,
+      country_code: countryCode,
     } = data.results[index ?? 0];
 
     const regionNameYes = regionName ? regionName + " / " : "";
 
-    if (name.split(" ").length === 1) {
-      elUserAddress.textContent = `${name.split(" ")[0]} / ${regionNameYes}${countryName}`;
-    } else if (name.split(" ").length === 2) {
-      elUserAddress.textContent = `${name.split(" ")[0]} ${name.split(" ")[1].slice(0, 3)} / ${regionNameYes}${countryName}`;
-    } else if (name.split(" ").length === 3) {
-      elUserAddress.textContent = `${name.split(" ")[0]} ${name.split(" ")[1].slice(0, 3)}. ${name.split(" ")[2].slice(0, 3)} / ${regionNameYes}${countryName}`;
+    function formatName(text) {
+      if (!text) return "";
+
+      const words = text.split(" ");
+
+      if (words.length <= 2) return text;
+
+      return words
+        .map((word, index) => (index === 0 ? word : `${word.slice(0, 3)}.`))
+        .join(" ");
     }
 
-    renderDatas(latitude, longitude, name, regionName, countryName);
+    const currentCity = formatName(name);
+
+    const currentRegion =
+      regionName !== undefined
+        ? `${formatName(regionName)} /`
+        : regionNameYes.trim();
+
+    const currentCountry =
+      countryName.split(" ").length > 2 ? countryCode : countryName;
+
+    elUserAddress.textContent = `${currentCity} / ${currentRegion} ${currentCountry}`;
+
+    renderDatas(latitude, longitude);
   } catch (err) {
-    alert("Error fetching data. Please try again later.");
+    console.log(err);
+    // alert("Error fetching data. Please try again later.");
   }
 };
 renderAddress("tashkent");
 
-const renderDatas = async function (
-  latitude,
-  longitude,
-  name,
-  regionName,
-  countryName,
-) {
+const renderDatas = async function (latitude, longitude) {
   const res = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m,surface_pressure,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,precipitation_probability&forecast_days=7&timezone=auto`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m,surface_pressure,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,precipitation_probability&forecast_days=7&timezone=auto`,
   );
   const data = await res.json();
 
@@ -115,6 +127,20 @@ const renderDatas = async function (
     updatedTime,
     updatedTime + 24,
   );
+  const hourlyWeatherCode = data.hourly.weather_code.slice(
+    updatedTime,
+    updatedTime + 24,
+  );
+
+  const commonHourlyWeatherCode = hourlyTemp.map((item, index) => {
+    const code = hourlyWeatherCode[index];
+    return {
+      temp: item,
+      temp_icon: weatherInfo[code].icon,
+    };
+  });
+  console.log(commonHourlyWeatherCode);
+
   const hourlyTimes = dailyTimes.slice(updatedTime, updatedTime + 24);
 
   const options = {
@@ -128,6 +154,33 @@ const renderDatas = async function (
         enabled: false,
       },
     },
+
+    responsive: [
+      {
+        breakpoint: 576,
+        options: {
+          chart: {
+            height: 220,
+          },
+        },
+      },
+      {
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 250,
+          },
+        },
+      },
+      {
+        breakpoint: 992,
+        options: {
+          chart: {
+            height: 300,
+          },
+        },
+      },
+    ],
 
     series: [
       {
@@ -165,9 +218,58 @@ const renderDatas = async function (
 
     grid: {
       padding: {
+        top: 25,
         left: 15,
       },
       show: false,
+    },
+
+    annotations: {
+      points: commonHourlyWeatherCode.map((item, index) => ({
+        x: hourlyTimes[index],
+        y: item.temp + 0.1, // temperaturadan biroz tepaga chiqaradi
+        marker: {
+          size: 0,
+        },
+        label: {
+          text: item.temp_icon,
+          borderWidth: 0,
+          style: {
+            background: "transparent",
+            color: "#000",
+            fontSize: "20px",
+          },
+          offsetY: -10,
+        },
+      })),
+    },
+
+    tooltip: {
+      custom: ({ dataPointIndex }) => {
+        const weather = commonHourlyWeatherCode[dataPointIndex];
+
+        return `
+          <div class="weather__tooltip">
+            <div class="mb-2 d-flex align-items-center justify-content-between gap-2">
+              <div class="weather__tooltip-time">
+                ${hourlyTimes[dataPointIndex]}
+              </div>
+              <div class="weather__tooltip-text">
+                ${weatherInfo[hourlyWeatherCode[dataPointIndex]].text}
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="weather__tooltip-icon">
+                ${weather.temp_icon}
+              </span>
+              <span class="weather__tooltip-temp fw-bold">
+                ${weather.temp}°C
+              </span>
+            </div>
+          </div>
+        `;
+      },
     },
 
     yaxis: {
@@ -218,14 +320,10 @@ elSuggestionsList.addEventListener("click", function (evt) {
     const li = evt.target.closest("li");
     if (!li) return;
     const index = [...elSuggestionsList.querySelectorAll("li")].indexOf(li);
+    elSuggestionsList.innerHTML = "";
+
+    renderAddress(elFormInput.value, index);
 
     elFormInput.value = evt.target.textContent.trim();
-    elSuggestionsList.innerHTML = "";
-    console.log(evt.target.textContent.trim().split(",")[0]);
-
-    renderAddress(
-      evt.target.textContent.trim().split(",")[0].split(" ")[0],
-      index,
-    );
   }
 });

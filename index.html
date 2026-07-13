@@ -14,43 +14,54 @@
     <title>Weather</title>
   </head>
   <body>
-    <div class="container badge text-bg-light">
-      <h1 class="">Weather</h1>
+    <div class="main">
+      <div class="container p-2 p-sm-3 text-bg-light">
+        <h1 class="main__title text-center">Weather</h1>
 
-      <div class="main">
-        <div
-          class="search mb-3 d-flex align-items-center justify-content-between gap-3"
-        >
-          <div class="d-flex align-items-center gap-2">
-            <span
-              class="search__round d-inline-block rounded-circle bg-primary"
-            ></span>
-            <h3 class="main__address m-0 d-inline-block fs-4">
-              Tashkent / Uzbekistan
-            </h3>
-          </div>
-
-          <form class="form d-flex align-items-center gap-2">
-            <div class="input__wrapper">
-              <input
-                class="form__input form-control d-inline-block"
-                type="text"
-                name="city"
-                placeholder="Search for a city..."
-                required
-                autocomplete="off"
-              />
-
-              <ul class="suggestions__list d-none overflow-x-auto z-1"></ul>
+        <div class="">
+          <div
+            class="search mb-3 d-flex flex-column flex-sm-row justify-content-sm-between gap-1"
+          >
+            <div class="d-flex align-items-center gap-1 gap-lg-2">
+              <span
+                class="search__round d-inline-block rounded-circle bg-primary"
+              ></span>
+              <h3 class="search__address m-0 mb-1 mb-sm-0 d-inline-block">
+                Tashkent / Uzbekistan
+              </h3>
             </div>
 
-            <button class="btn btn-primary" type="submit">Search</button>
-          </form>
-        </div>
+            <form class="search__form d-flex align-items-center gap-2">
+              <div class="search__input-wrapper">
+                <input
+                  class="search__form-input form-control"
+                  type="text"
+                  name="city"
+                  placeholder="Search for a city..."
+                  required
+                  autocomplete="off"
+                />
 
-        <div class="conditions text-start d-flex align-items-center gap-3">
-          <div class="conditions__details d-flex">
-            <div class="conditions__left me-2 d-flex">
+                <ul
+                  class="search__suggestions-list d-none overflow-x-auto z-1"
+                ></ul>
+              </div>
+
+              <button
+                class="search__btn btn btn-primary fw-semibold"
+                type="submit"
+              >
+                Search
+              </button>
+            </form>
+          </div>
+
+          <!-- Condition -->
+
+          <div
+            class="conditions text-start d-flex flex-column flex-sm-row align-items-center"
+          >
+            <div class="conditions__left me-2 mb-2 d-flex">
               <span class="conditions__left-icon me-2">☀️</span>
               <span class="conditions__left-temperature me-2 fw-semibold"
                 >0</span
@@ -58,37 +69,47 @@
               <span class="fs-5 fw-medium lh-base">℃</span>
             </div>
 
-            <span class="conditions__line bg-secondary"></span>
+            <span
+              class="conditions__line bg-secondary d-none d-sm-block"
+            ></span>
 
-            <div class="conditions__right ms-2">
-              <p class="conditions__right-details fw-normal">
-                Chance of Precipitation:
-                <span class="conditions__right-chance-of-prec">0%</span>
-              </p>
-              <p class="conditions__right-details fw-normal">
-                Humidity: <span class="conditions__right-humidity">0%</span>
-              </p>
-              <p class="conditions__right-details fw-normal">
-                Wind: <span class="conditions__right-wind">0 km/h</span>
-              </p>
+            <div
+              class="conditions__details d-flex align-items-center justify-content-between w-100"
+            >
+              <ul class="conditions__right m-0 p-0 ms-2 list-unstyled">
+                <li class="conditions__right-details fw-normal">
+                  Chance of Precipitation:
+                  <span class="conditions__right-chance-of-prec">0%</span>
+                </li>
+                <li class="conditions__right-details fw-normal">
+                  Humidity: <span class="conditions__right-humidity">0%</span>
+                </li>
+                <li class="conditions__right-details fw-normal">
+                  Wind: <span class="conditions__right-wind">0 km/h</span>
+                </li>
+              </ul>
+
+              <ul class="conditions__datas m-0 p-0 list-unstyled text-end">
+                <li class="conditions__datas-items fw-semibold">Weather</li>
+                <li class="conditions__datas-items fw-normal">
+                  <span class="conditions__datas-day">Monday</span>
+                  <span class="conditions__datas-day-time">0:00 PM</span>
+                </li>
+                <li class="conditions__datas-items fw-normal">
+                  <span class="conditions__datas-items-condition">Clear</span>
+                </li>
+              </ul>
             </div>
           </div>
-
-          <ul class="conditions__datas m-0 p-0 ms-auto list-unstyled text-end">
-            <li class="conditions__datas-items fw-normal fs-4">Weather</li>
-            <li class="conditions__datas-items fw-normal">
-              <span class="conditions__datas-day">Monday</span>
-              <span class="conditions__datas-day-time">0:00 PM</span>
-            </li>
-            <li class="conditions__datas-items fw-normal">
-              <span class="conditions__datas-items-condition">Clear</span>
-            </li>
-          </ul>
         </div>
-      </div>
 
-      <div class="chart-wrapper">
-        <div id="chart" class="w-100" style="height: auto"></div>
+        <div class="chart-wrapper">
+          <div
+            id="chart"
+            class="w-100 pt-sm-2 pt-md-4 pt-lg-5"
+            style="height: auto"
+          ></div>
+        </div>
       </div>
     </div>
 

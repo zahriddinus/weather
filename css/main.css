@@ -1,3 +1,5 @@
+/* Common CSS */
+
 *,
 *::before,
 *::after {
@@ -23,26 +25,44 @@ img {
   vertical-align: middle;
 }
 
-.search__round {
-  padding: 8px;
+/* MAIN CSS */
+
+.container {
+  max-width: 1232px;
 }
 
-.form {
-  max-width: 400px;
+.main__title {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.search__address {
+  font-size: 0.8rem;
+}
+
+.search__round {
+  padding: 4px;
+}
+
+.search__form {
   width: 100%;
 }
 
-.input__wrapper {
+.search__input-wrapper {
   position: relative;
   width: 100%;
 }
 
-.form__input {
-  padding: 5px 10px;
+.search__form-input {
+  padding: 3px 6px;
   box-sizing: border-box;
 }
 
-.suggestions__list {
+.search__form-input::placeholder {
+  font-size: 0.8rem !important;
+}
+
+.search__suggestions-list {
   position: absolute;
   top: 100%;
   left: 0;
@@ -54,13 +74,18 @@ img {
   border: 1px solid #ccc;
 }
 
-.suggestions__list li {
+.search__suggestions-list li {
   padding: 10px;
   cursor: pointer;
 }
 
-.suggestions__list li:hover {
+.search__suggestions-list li:hover {
   background: #eee;
+}
+
+.search__btn {
+  padding: 5px 10px;
+  font-size: 0.8rem;
 }
 
 .conditions__left-icon {
@@ -73,19 +98,26 @@ img {
 }
 
 .conditions__line {
-  display: inline-block;
   padding: 1px;
+  height: 56px;
 }
 
 .conditions__right-details {
   margin: 0;
-  margin-top: 2.5px;
   font-size: 14px;
+  line-height: 1.2;
+}
+
+.conditions__right-details + .conditions__right-details {
+  margin-top: 2.5px;
 }
 
 .conditions__datas-items {
-  margin-top: 2.5px;
   font-size: 17px;
+  line-height: 1.2;
+}
+.conditions__datas-items:nth-child(1) {
+  font-size: 1.3rem;
 }
 
 .chart-wrapper {
@@ -100,5 +132,167 @@ img {
 }
 
 #chart {
-  min-width: 1400px; /* yoki data.length * 60 px */
+  min-width: 1400px;
+}
+
+/* Tooltip */
+.apexcharts-tooltip {
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+}
+
+.weather__tooltip {
+  padding: 9px 13px;
+}
+
+.weather__tooltip-time,
+.weather__tooltip-text {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.weather__tooltip-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.weather__tooltip-temp {
+  font-size: 1rem;
+}
+
+@media (min-width: 576px) {
+  .search__form {
+    max-width: 300px;
+  }
+
+  .search__form-input {
+    padding: 4px 8px !important;
+  }
+
+  .search__form-input::placeholder {
+    font-size: 1rem !important;
+  }
+
+  /* Tooltip */
+  .weather__tooltip {
+    padding: 10px 14px;
+  }
+
+  .weather__tooltip-time,
+  .weather__tooltip-text {
+    font-size: 1rem;
+  }
+
+  .weather__tooltip-icon {
+    font-size: 1.3rem;
+  }
+
+  .weather__tooltip-temp {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .main__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+  }
+
+  .search__address {
+    font-size: 1rem;
+  }
+
+  .search__form {
+    max-width: 375px;
+  }
+
+  .search__form-input {
+    padding: 4px 8px;
+  }
+
+  .search__form-input::placeholder {
+    font-size: 0.8rem !important;
+  }
+
+  .search__btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  .conditions__line {
+    padding: 1.2px;
+    height: 60px;
+  }
+
+  .conditions__right-details {
+    line-height: 1.3;
+  }
+
+  .conditions__datas-items {
+    line-height: 1.3;
+  }
+
+  .conditions__datas-items:nth-child(1) {
+    font-size: 1.5rem;
+  }
+
+  /* Tooltip */
+  .weather__tooltip {
+    padding: 12px 16px;
+  }
+
+  .weather__tooltip-icon {
+    font-size: 1.4rem;
+  }
+
+  .weather__tooltip-temp {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .main__title {
+    margin: 0 0 6px;
+    font-size: 2rem;
+  }
+
+  .search__round {
+    padding: 6px;
+  }
+
+  .search__address {
+    font-size: 1.25rem;
+  }
+
+  .search__form {
+    max-width: 450px;
+  }
+
+  .search__form-input {
+    padding: 5px 10px;
+  }
+
+  .search__btn {
+    padding: 6px 12px;
+    font-size: 1rem;
+  }
+
+  .conditions__line {
+    padding: 1.5px;
+    height: 74px;
+  }
+
+  .conditions__right-details {
+    font-size: 1.1rem;
+  }
+
+  .conditions__datas-items {
+    font-size: 1.4rem;
+  }
+
+  .conditions__datas-items:nth-child(1) {
+    font-size: 1.8rem;
+  }
 }
