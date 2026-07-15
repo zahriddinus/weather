@@ -80,8 +80,7 @@ const renderAddress = async function (country, index) {
 
     renderDatas(latitude, longitude);
   } catch (err) {
-    console.log(err);
-    // alert("Error fetching data. Please try again later.");
+    alert("Error fetching data. Please try again later.");
   }
 };
 renderAddress("tashkent");
@@ -146,7 +145,7 @@ const renderDatas = async function (latitude, longitude) {
   const options = {
     chart: {
       type: "area",
-      height: 250,
+      height: 530,
       toolbar: {
         show: false,
       },
@@ -160,7 +159,7 @@ const renderDatas = async function (latitude, longitude) {
         breakpoint: 576,
         options: {
           chart: {
-            height: 220,
+            height: 350,
           },
         },
       },
@@ -168,7 +167,7 @@ const renderDatas = async function (latitude, longitude) {
         breakpoint: 768,
         options: {
           chart: {
-            height: 250,
+            height: 450,
           },
         },
       },
@@ -176,7 +175,7 @@ const renderDatas = async function (latitude, longitude) {
         breakpoint: 992,
         options: {
           chart: {
-            height: 300,
+            height: 550,
           },
         },
       },
@@ -326,4 +325,12 @@ elSuggestionsList.addEventListener("click", function (evt) {
 
     elFormInput.value = evt.target.textContent.trim();
   }
+});
+
+const chart = document.querySelector(".chart-wrapper");
+
+window.visualViewport.addEventListener("resize", () => {
+  const keyboardOpen = window.visualViewport.height < window.innerHeight * 0.8;
+
+  chart.style.display = keyboardOpen ? "none" : "block";
 });

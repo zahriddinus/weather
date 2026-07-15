@@ -29,6 +29,7 @@ img {
 
 .container {
   max-width: 1232px;
+  height: 100vh;
 }
 
 .main__title {
@@ -125,6 +126,7 @@ img {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
+  margin-top: auto !important;
 }
 
 .chart-wrapper::-webkit-scrollbar {
